@@ -34,6 +34,7 @@ export default function App() {
           style={styles.imgCafe}
           source={require("./assets/img/cafe.jpg")}
           resizeMode="cover"
+          blurRadius={3}
         />
         <StatusBar style="auto" />
       </ScrollView>
