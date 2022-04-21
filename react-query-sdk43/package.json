@@ -15,9 +15,10 @@
     "expo-status-bar": "~1.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-native": "0.64.2",
+    "react-native": "0.64.3",
     "react-native-web": "0.17.1",
-    "react-query": "^3.34.19"
+    "react-query": "^3.34.19",
+    "zustand": "^4.0.0-rc.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

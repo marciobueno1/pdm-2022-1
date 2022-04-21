@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { StyleSheet, Switch, View } from "react-native";
+import { ScrollView, StyleSheet, Switch, View } from "react-native";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Blank } from "./pages/Blank";
 import { People } from "./pages/People";
@@ -19,7 +19,7 @@ export default function App() {
           onValueChange={() => setShowBlank(!showBlank)}
           value={showBlank}
         />
-        {showBlank ? <Blank /> : <People />}
+        <ScrollView>{showBlank ? <Blank /> : <People />}</ScrollView>
         <StatusBar style="auto" />
       </View>
     </QueryClientProvider>
@@ -32,5 +32,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 30,
   },
 });

@@ -1,12 +1,28 @@
-import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useQuery } from "react-query";
 import axios from "axios";
+import { Person } from "../components/Person";
+import { useStore } from "../zustandStore";
 
 export const People = () => {
-  const { isLoading, error, data, isFetching } = useQuery("people-2", () =>
-    axios.get("https://swapi.dev/api/people/?page=2").then((res) => res.data)
+  const page = useStore((state) => state.page);
+  const increasePage = useStore((state) => state.increasePage);
+  const decreasePage = useStore((state) => state.decreasePage);
+  const changeNextPrevious = useStore((state) => state.changeNextPrevious);
+  const { isLoading, error, data, isFetching } = useQuery(
+    `people-${page.number}`,
+    () => axios.get(page.url).then((res) => res.data)
   );
+  const handleButtonNextPress = () => {
+    increasePage(1);
+  };
+  const handleButtonPreviousPress = () => {
+    decreasePage();
+  };
+  useEffect(() => {
+    changeNextPrevious(data?.next, data?.previous);
+  }, [data]);
 
   if (isLoading) return <Text>Loading...</Text>;
 
@@ -14,15 +30,23 @@ export const People = () => {
 
   return (
     <ScrollView>
+      <Text>Página {page.number}</Text>
+      <Button
+        title="-"
+        onPress={handleButtonPreviousPress}
+        disabled={page.previous === null}
+      />
+      <Button
+        title="+"
+        onPress={handleButtonNextPress}
+        disabled={page.next === null}
+      />
+      <View>
+        <Text>{isFetching ? "Updating..." : ""}</Text>
+      </View>
       {!!data &&
         data.results.map((person) => (
-          <View>
-            <Text style={styles.text}>NOME: {person.name}</Text>
-            <Text style={styles.text}>ALTURA: {person.height}</Text>
-            <View>
-              <Text>{isFetching ? "Updating..." : ""}</Text>
-            </View>
-          </View>
+          <Person key={person.name} person={person} />
         ))}
     </ScrollView>
   );
